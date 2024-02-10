@@ -31,6 +31,7 @@ class Game:
         map_loader = MapLoader(self.filename)
         self.map_builder = MapBuilder(map_loader, self.screen)
         self.map_builder.build_map()
+        self.player = self.map_builder.get_player()
 
     def run(self, fps):
         running = True
@@ -41,9 +42,11 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-
+                elif event.type == pygame.KEYDOWN:
+                    self.player.set_direction(event.key)
             self.screen.fill("black")
 
+            self.map_builder.update()
             self.map_builder.render()
 
             pygame.display.flip()
